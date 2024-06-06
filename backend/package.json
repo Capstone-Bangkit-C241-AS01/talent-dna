@@ -2,7 +2,10 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.9",
     "@tensorflow/tfjs-node": "^3.21.1",
-    "dotenv": "^16.4.5"
+    "bert-tokenizer": "^1.1.8",
+    "dotenv": "^16.4.5",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
   },
   "name": "talent-dna",
   "version": "1.0.0",
