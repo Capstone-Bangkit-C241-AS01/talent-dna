@@ -2,33 +2,33 @@ const tf = require('@tensorflow/tfjs-node');
 const InputError = require('../exceptions/InputError');
 
 async function predictRegression(model) {
-    //TODO: Implementasikan fungsi yang diperlukan
+    // //TODO: Implementasikan fungsi yang diperlukan
 
-    // import dataset
-    const dataset = require('../../data/test.json');
-    const data = dataset.data;
+    // // import dataset
+    // const dataset = require('../../data/test.json');
+    // const data = dataset.data;
 
-    // ambil input
-    const input = data.map((item) => item.input);
+    // // ambil input
+    // const input = data.map((item) => item.input);
 
-    // scaling input
-    const inputTensor = tf.tensor2d(input);
-    const inputMax = inputTensor.max();
-    const inputMin = inputTensor.min();
-    const inputScaled = inputTensor.sub(inputMin).div(inputMax.sub(inputMin));
+    // // scaling input
+    // const inputTensor = tf.tensor2d(input);
+    // const inputMax = inputTensor.max();
+    // const inputMin = inputTensor.min();
+    // const inputScaled = inputTensor.sub(inputMin).div(inputMax.sub(inputMin));
 
-    // input dikirim ke model regresi pake model.json
-    const prediction = model.predict(inputScaled);
+    // // input dikirim ke model regresi pake model.json
+    // const prediction = model.predict(inputScaled);
 
-    //hasil multiple regression dimapping dengan list kode talent seperti ini  [{Talent: strength}, {},{},…]
-    const talent = dataset.meta.map((item) => item.Talent);
-    const result = prediction.arraySync().map((item, index) => {
-        return {
-            [talent[index]]: item[0]
-        }
-    });
+    // //hasil multiple regression dimapping dengan list kode talent seperti ini  [{Talent: strength}, {},{},…]
+    // const talent = dataset.meta.map((item) => item.Talent);
+    // const result = prediction.arraySync().map((item, index) => {
+    //     return {
+    //         [talent[index]]: item[0]
+    //     }
+    // });
 
-    return result;
+    // return result;
 
     //dari hasil multiple regression,  ambil 10 nilai terbesar dan 5 nilai terkecil
 
