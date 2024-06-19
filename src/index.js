@@ -27,12 +27,12 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/components" element={<Index />} />
+      <Route path="/" element={<Index />} />
       <Route path="/result" element={<ResultPage />} />
       <Route path="/result/:id" element={<ResultPageFromList />} />
       <Route path="/fill-assessment" element={<AssessmentPage />} />
       <Route path="/view-all-result" element={<ListResultsPage />} />
-      <Route path="*" element={<Navigate to="/components" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </BrowserRouter>
 );
