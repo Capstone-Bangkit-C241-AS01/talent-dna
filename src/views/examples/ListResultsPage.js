@@ -40,7 +40,7 @@ export default function ListResultsPage() {
 
   useEffect(() => {
     axios
-      .get(`http://103.190.215.154:8000/api/data/`)
+      .get(`https://talentdna.cloud/api/data/`)
       .then((res) => {
         setStaffs(res.data)
         console.log(res.data);

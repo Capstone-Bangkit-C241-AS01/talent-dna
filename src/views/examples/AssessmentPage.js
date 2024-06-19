@@ -101,7 +101,7 @@ export default function AssessmentPage() {
 
     try {
 
-        const response = await axios.post('http://103.190.215.154:8000/api/', {
+        const response = await axios.post('https://talentdna.cloud/api/', {
           name,
           string: assessmentAnswer
         });

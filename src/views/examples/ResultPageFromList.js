@@ -44,7 +44,7 @@ const ResultPageFromList = () => {
   useEffect(() => {
     const fetchResult = async () => {
         try {
-          const response = await axios.get(`http://103.190.215.154:8000/api/data/${id}/`);
+          const response = await axios.get(`https://talentdna.cloud/api/data/${id}/`);
               setResultData(response.data);
               setTopTalents(response.data.top_10_talents);
               setTopTalentsDesc(response.data.top_talent_description);
