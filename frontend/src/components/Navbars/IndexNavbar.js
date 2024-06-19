@@ -22,6 +22,9 @@ import {
   NavbarBrand,
   Navbar,
   Container,
+  NavItem,
+  NavLink,
+  Nav
 } from "reactstrap";
 
 export default function IndexNavbar() {
@@ -54,6 +57,13 @@ export default function IndexNavbar() {
             <span>TalentDNA</span>
           </NavbarBrand>
         </div>
+        <Nav navbar>
+        <NavItem>
+          <NavLink tag={Link} to="/view-all-result">
+            Results
+          </NavLink>
+      </NavItem>
+      </Nav>
       </Container>
     </Navbar>
   );

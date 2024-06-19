@@ -103,6 +103,17 @@
 .landing-page {
   overflow-x: hidden;
 
+  .talent-result {
+    position: absolute;
+    top: 110px;
+    left: 20px;
+  }
+
+  .h1-result{
+  color: #fff;
+  font-weight: 600;
+  }
+
   .page-header {
 
     &::after {
@@ -314,7 +325,7 @@
     .profile-title {
       position: absolute;
       top: 110px;
-      left: 60px;
+      left: 20px;
     }
 
     .profile-description {

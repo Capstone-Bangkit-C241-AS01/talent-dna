@@ -15,9 +15,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-// react plugin used to create charts
-import { Line } from "react-chartjs-2";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from "axios";
+
 // reactstrap components
 import {
   Button,
@@ -31,12 +32,23 @@ import {
   Container,
   Row,
   Col,
+  Badge
 } from "reactstrap";
 
 // core components
-import ExamplesNavbar from "components/Navbars/IndexNavbar.js";
+import IndexNavbar from "components/Navbars/IndexNavbar.js";
 
-export default function ResultPage() {
+const ResultPage = () => {
+  const [resultData, setResultData] = useState('');
+  const [topTalents, setTopTalents] = useState([]);
+  const [topTalentsDesc, setTopTalentsDesc] = useState('');
+  const [bottomTalents, setBottomTalents] = useState([]);
+  const [bottomTalentsDesc, setBottomTalentsDesc] = useState('');
+  const [jobs, setJobs] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const response = location.state?.response;
+
   React.useEffect(() => {
     document.body.classList.toggle("landing-page");
     // Specify how to clean up after this effect:
@@ -44,379 +56,182 @@ export default function ResultPage() {
       document.body.classList.toggle("landing-page");
     };
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`https://mocki.io/v1/be2fa413-f265-4f46-85b4-c25a6c55659f`)
+      .then((res) => {
+        setResultData(res.data);
+        setTopTalents(res.data.top_10_talents);
+        setTopTalentsDesc(res.data.top_talent_description);
+        setBottomTalents(res.data.bottom_5_talents);
+        setBottomTalentsDesc(res.data.bottom_talent_description);
+        setJobs(res.data.job_recommendations)
+        // console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  });
+
+  const [toggledIndex, setToggledIndex] = useState(null);
+
+  const toggleDesc = (index) => {
+    setToggledIndex(toggledIndex === index ? null : index);
+  };
+
+  const formatTextWithLineBreaks = (text) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   return (
     <>
-      <ExamplesNavbar />
-      <div className="wrapper">
-        <div className="page-header">
-          <img
-            alt="..."
-            className="path"
-            src={require("assets/img/blob.png")}
-          />
-          <img
-            alt="..."
-            className="path2"
-            src={require("assets/img/path2.png")}
-          />
-          <img
-            alt="..."
-            className="shapes triangle"
-            src={require("assets/img/triunghiuri.png")}
-          />
-          <img
-            alt="..."
-            className="shapes wave"
-            src={require("assets/img/waves.png")}
-          />
-          <img
-            alt="..."
-            className="shapes squares"
-            src={require("assets/img/patrat.png")}
-          />
-          <img
-            alt="..."
-            className="shapes circle"
-            src={require("assets/img/cercuri.png")}
-          />
-          <div className="content-center">
-           
-
-
-
-
-          </div>
+      <IndexNavbar />
+      <div className="section section-typo">
+      <img alt="..." className="path" src={require("assets/img/path1.png")} />
+      <Container>
+        <br></br>
+        <h1 className="h1-result text-center">Result</h1>
+        <h3>Name&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp; </h3>
+        <hr className="line-info" />
+        <h1 className="title">
+          Your{" "}
+          <span className="text-info">Top 10 Talents</span>
+        </h1>
+        <div id="typography">
+        {topTalents.map((topTalent, i) => ( 
+          <Row>
+            <Col md="3" className="text-center">
+              {i+1 < 10 ? (
+                <h5 className="text-on-back">0{i+1}</h5>
+              ):
+              <h5 className="text-on-back">{i+1}</h5>
+              }
+            </Col>
+            <Col md="9">
+              <div className="typography-line">
+                <h2 className="mt-4" style={{textTransform: "capitalize"}}>
+                  {topTalent.name}
+                </h2>  
+                <Button
+                className="btn-simple btn-round ml-5 mt-3"
+                color="success"
+                style={{ pointerEvents:"none", alignSelf: "flex-start" }}
+                >{`${(topTalent.Strength * 100).toFixed(0)}%`}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        ))}
+        
+          <Card>
+            <h2 className="title ml-5">Summary</h2>
+              <CardBody>
+              <p className="mx-4 mb-4" style={{fontSize:"20px"}}>
+              {formatTextWithLineBreaks(topTalentsDesc)}
+            </p>
+              </CardBody>     
+          </Card>
         </div>
-        <section className="section section-lg">
-          <section className="section">
-            {/* <img
-              alt="..."
-              className="path"
-              src={require("assets/img/path4.png")}
-            />
-            <Container>
-              <Row className="row-grid justify-content-between">
-                <Col className="mt-lg-5" md="5">
-                  <Row>
-                    <Col className="px-2 py-2" lg="6" sm="12">
-                      <Card className="card-stats">
-                        <CardBody>
-                          <Row>
-                            <Col md="4" xs="5">
-                              <div className="icon-big text-center icon-warning">
-                                <i className="tim-icons icon-trophy text-warning" />
-                              </div>
-                            </Col>
-                            <Col md="8" xs="7">
-                              <div className="numbers">
-                                <CardTitle tag="p">3,237</CardTitle>
-                                <p />
-                                <p className="card-category">Awards</p>
-                              </div>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col className="px-2 py-2" lg="6" sm="12">
-                      <Card className="card-stats upper bg-default">
-                        <CardBody>
-                          <Row>
-                            <Col md="4" xs="5">
-                              <div className="icon-big text-center icon-warning">
-                                <i className="tim-icons icon-coins text-white" />
-                              </div>
-                            </Col>
-                            <Col md="8" xs="7">
-                              <div className="numbers">
-                                <CardTitle tag="p">3,653</CardTitle>
-                                <p />
-                                <p className="card-category">Commits</p>
-                              </div>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="px-2 py-2" lg="6" sm="12">
-                      <Card className="card-stats">
-                        <CardBody>
-                          <Row>
-                            <Col md="4" xs="5">
-                              <div className="icon-big text-center icon-warning">
-                                <i className="tim-icons icon-gift-2 text-info" />
-                              </div>
-                            </Col>
-                            <Col md="8" xs="7">
-                              <div className="numbers">
-                                <CardTitle tag="p">593</CardTitle>
-                                <p />
-                                <p className="card-category">Presents</p>
-                              </div>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col className="px-2 py-2" lg="6" sm="12">
-                      <Card className="card-stats">
-                        <CardBody>
-                          <Row>
-                            <Col md="4" xs="5">
-                              <div className="icon-big text-center icon-warning">
-                                <i className="tim-icons icon-credit-card text-success" />
-                              </div>
-                            </Col>
-                            <Col md="8" xs="7">
-                              <div className="numbers">
-                                <CardTitle tag="p">10,783</CardTitle>
-                                <p />
-                                <p className="card-category">Forks</p>
-                              </div>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md="6">
-                  <div className="pl-md-5">
-                    <h1>
-                      Large <br />
-                      Achivements
-                    </h1>
-                    <p>
-                      I should be capable of drawing a single stroke at the
-                      present moment; and yet I feel that I never was a greater
-                      artist than now.
-                    </p>
-                    <br />
-                    <p>
-                      When, while the lovely valley teems with vapour around me,
-                      and the meridian sun strikes the upper surface of the
-                      impenetrable foliage of my trees, and but a few stray.
-                    </p>
-                    <br />
-                    <a
-                      className="font-weight-bold text-info mt-5"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      Show all{" "}
-                      <i className="tim-icons icon-minimal-right text-info" />
-                    </a>
-                  </div>
-                </Col>
-              </Row>
-            </Container> */}
-          </section>
-        </section>
-        <section className="section section-lg">
-          {/* <img
-            alt="..."
-            className="path"
-            src={require("assets/img/path4.png")}
-          />
-          <img
-            alt="..."
-            className="path2"
-            src={require("assets/img/path5.png")}
-          />
-          <img
-            alt="..."
-            className="path3"
-            src={require("assets/img/path2.png")}
-          />
-          <Container>
-            <Row className="justify-content-center">
-              <Col lg="12">
-                <h1 className="text-center">Your best benefit</h1>
-                <Row className="row-grid justify-content-center">
-                  <Col lg="3">
-                    <div className="info">
-                      <div className="icon icon-primary">
-                        <i className="tim-icons icon-money-coins" />
-                      </div>
-                      <h4 className="info-title">Low Commission</h4>
-                      <hr className="line-primary" />
-                      <p>
-                        Divide details about your work into parts. Write a few
-                        lines about each one. A paragraph describing a feature
-                        will.
-                      </p>
-                    </div>
-                  </Col>
-                  <Col lg="3">
-                    <div className="info">
-                      <div className="icon icon-warning">
-                        <i className="tim-icons icon-chart-pie-36" />
-                      </div>
-                      <h4 className="info-title">High Incomes</h4>
-                      <hr className="line-warning" />
-                      <p>
-                        Divide details about your product or agency work into
-                        parts. Write a few lines about each one. A paragraph
-                        describing feature will be a feature.
-                      </p>
-                    </div>
-                  </Col>
-                  <Col lg="3">
-                    <div className="info">
-                      <div className="icon icon-success">
-                        <i className="tim-icons icon-single-02" />
-                      </div>
-                      <h4 className="info-title">Verified People</h4>
-                      <hr className="line-success" />
-                      <p>
-                        Divide details about your product or agency work into
-                        parts. Write a few lines about each one. A paragraph
-                        describing be enough.
-                      </p>
-                    </div>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Container> */}
-        </section>
-        <section className="section section-lg section-safe">
-          {/* <img
-            alt="..."
-            className="path"
-            src={require("assets/img/path5.png")}
-          />
-          <Container>
-            <Row className="row-grid justify-content-between">
-              <Col md="5">
-                <img
-                  alt="..."
-                  className="img-fluid floating"
-                  src={require("assets/img/chester-wade.jpg")}
-                />
-                <Card className="card-stats bg-danger">
+    
+        <div className="space-50" />
+        
+        <hr className="line-warning" />
+        <h1 className="title">
+          Your{" "}
+          <span className="text-warning">Bottom 5 Talents</span>
+        </h1>
+        <div id="typography">
+        {bottomTalents.map((bottomTalent, i) => ( 
+          <Row>
+            <Col md="3" className="text-center">
+                <h5 className="text-on-back">0{i+1}</h5>
+            </Col>
+            <Col md="9">
+              <div className="typography-line">
+                <h2 className="mt-4" style={{textTransform: "capitalize"}}>
+                  {bottomTalent.name}
+                </h2>  
+                <Button
+                className="btn-simple btn-round ml-5 mt-3"
+                color="danger"
+                style={{ pointerEvents:"none", alignSelf: "flex-start" }}
+                >{`${(bottomTalent.Strength * 100).toFixed(0)}%`}
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        ))}
+          <Card>
+            <h2 className="title ml-5">Summary</h2>
+              <CardBody>
+              <p className="mx-4 mb-4" style={{fontSize:"20px"}}>
+              {formatTextWithLineBreaks(bottomTalentsDesc)}
+            </p>
+              </CardBody>     
+          </Card>
+        </div>
+
+        <div className="space-50" />
+        
+        <hr className="line-primary" />
+        <h1 className="title">
+          <span className="text-primary">5 Suitable Jobs </span>
+          For You  
+        </h1>
+        <Container>
+            <Row>
+              <Col md="12">
+              {jobs.map((job, i) => (
+                <Card className="card-coin card-plain">
                   <CardBody>
-                    <div className="justify-content-center">
-                      <div className="numbers">
-                        <CardTitle tag="p">100%</CardTitle>
-                        <p className="card-category text-white">Safe</p>
+                    <Col md="12">
+                      <div>
+                        <Row>
+                          <h5 className="text-on-back ml-4">0{i+1}</h5>
+                          <h3 className="mt-4 ml-4">
+                            {job.Job}
+                          </h3> 
+                          <Button onClick={() => toggleDesc(i)} className="btn-icon btn-round ml-auto mt-4 mr-4">
+                          {toggledIndex === i ? "△" : "▽"}
+                          </Button>
+                        </Row>
                       </div>
-                    </div>
-                  </CardBody>
-                </Card>
-                <Card className="card-stats bg-info">
-                  <CardBody>
-                    <div className="justify-content-center">
-                      <div className="numbers">
-                        <CardTitle tag="p">573 K</CardTitle>
-                        <p className="card-category text-white">
-                          Satisfied customers
+                      </Col>
+                    {toggledIndex === i && (
+                      <div>
+                        <Badge color="info" className="ml-4">Job Tasks</Badge>
+                        <p className="ml-4" style={{ fontSize: '16px' }}>
+                          {formatTextWithLineBreaks(job.Tasks)}
+                        </p>
+                        <br></br>
+                        <Badge color="success" className="ml-4">Work Styles</Badge>
+                        <p className="ml-4" style={{ fontSize: '16px' }}>
+                          {formatTextWithLineBreaks(job["Work Styles"])}
                         </p>
                       </div>
-                    </div>
+                    )}
+                    
                   </CardBody>
                 </Card>
-                <Card className="card-stats bg-default">
-                  <CardBody>
-                    <div className="justify-content-center">
-                      <div className="numbers">
-                        <CardTitle tag="p">10 425</CardTitle>
-                        <p className="card-category text-white">Business</p>
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col md="6">
-                <div className="px-md-5">
-                  <hr className="line-success" />
-                  <h3>Awesome features</h3>
-                  <p>
-                    The design system comes with three pre-built pages to help
-                    you get started faster. You can change the text and images
-                    and you're good to go.
-                  </p>
-                  <ul className="list-unstyled mt-5">
-                    <li className="py-2">
-                      <div className="d-flex align-items-center">
-                        <div className="icon icon-success mb-2">
-                          <i className="tim-icons icon-vector" />
-                        </div>
-                        <div className="ml-3">
-                          <h6>Carefully crafted components</h6>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="py-2">
-                      <div className="d-flex align-items-center">
-                        <div className="icon icon-success mb-2">
-                          <i className="tim-icons icon-tap-02" />
-                        </div>
-                        <div className="ml-3">
-                          <h6>Amazing page examples</h6>
-                        </div>
-                      </div>
-                    </li>
-                    <li className="py-2">
-                      <div className="d-flex align-items-center">
-                        <div className="icon icon-success mb-2">
-                          <i className="tim-icons icon-single-02" />
-                        </div>
-                        <div className="ml-3">
-                          <h6>Super friendly support team</h6>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+              ))}
               </Col>
             </Row>
-          </Container> */}
-        </section>
-        <section className="section section-lg">
-          {/* <img
-            alt="..."
-            className="path"
-            src={require("assets/img/path4.png")}
-          />
-          <img
-            alt="..."
-            className="path2"
-            src={require("assets/img/path2.png")}
-          />
-          <Col md="12">
-            <Card className="card-chart card-plain">
-              <CardHeader>
-                <Row>
-                  <Col className="text-left" sm="6">
-                    <hr className="line-info" />
-                    <h5 className="card-category">Total Investments</h5>
-                    <CardTitle tag="h2">Performance</CardTitle>
-                  </Col>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                <div className="chart-area">
-                  <Line
-                    data={bigChartData.data}
-                    options={bigChartData.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
-          </Col> */}
-        </section>
-        <section className="section section-lg section-coins">
-          {/* <img
-            alt="..."
-            className="path"
-            src={require("assets/img/path3.png")}
-          /> */}
-          
-        </section>
-      </div>
+            <div className="space-50" />
+            <Row className="text-center">
+              <Col md='12'>
+              <Button color="default" className="mr-4 text-center" onClick={() => navigate("/")}>Back to Homepage</Button>
+              </Col>
+            </Row>
+        </Container>
+        
+      </Container>
+    </div>
     </>
   );
 }
+
+export default ResultPage;

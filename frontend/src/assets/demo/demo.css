@@ -7,10 +7,12 @@
 }
 
 .typography-line {
-  padding-left: 25%;
-  margin-bottom: 35px;
+  /* padding-left: 5%; */
+  margin-top:5px;
+  margin-bottom: 10px;
   position: relative;
-  display: block;
+  display: flex;
+  /* justify-content: space-between; */
   width: 100%;
 }
 
@@ -426,6 +428,12 @@
 .components-page .title,
 .tutorial-page .title {
   color: #FFFFFF;
+}
+
+.h1-result{
+  color: #fff;
+  font-weight: 100;
+  font-size: 60px;
 }
 
 .brand .h1-seo {

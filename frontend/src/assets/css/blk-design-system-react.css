@@ -4106,7 +4106,7 @@ input[type="button"].btn-block {
   ~ .custom-control-label::before {
   border-color: #e14eca;
   background-color: #e14eca;
-  box-shadow: ;
+  /* box-shadow: ; */
 }
 
 .custom-checkbox
@@ -18538,6 +18538,11 @@ textarea.form-control:active {
   font-size: 1rem;
 }
 
+.h1-result{
+  color: #fff;
+  font-weight: 600;
+}
+
 .index-page .page-header {
   height: 100vh;
 }
@@ -18793,6 +18798,11 @@ textarea.form-control:active {
   padding-left: 20px;
 }
 .profile-page .profile-title {
+  position: absolute;
+  top: 110px;
+  left: 60px;
+}
+.talent-result {
   position: absolute;
   top: 110px;
   left: 60px;

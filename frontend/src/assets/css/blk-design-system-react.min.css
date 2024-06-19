@@ -3769,7 +3769,7 @@ input[type="button"].btn-block {
   ~ .custom-control-label::before {
   border-color: #e14eca;
   background-color: #e14eca;
-  box-shadow: ;
+  /* box-shadow: ; */
 }
 .custom-checkbox
   .custom-control-input:indeterminate
@@ -17211,6 +17211,10 @@ textarea.form-control:active {
 .index-page .page-header {
   height: 100vh;
 }
+.h1-result{
+  color: #fff;
+  font-weight: 600;
+}
 .index-page .page-header .container > .content-center.brand .h1-seo,
 .index-page .page-header .container > .content-center.brand h3 {
   color: #fff;
@@ -17458,6 +17462,11 @@ textarea.form-control:active {
 .profile-page .info .description {
   text-align: left;
   padding-left: 20px;
+}
+.talent-result {
+  position: absolute;
+  top: 110px;
+  left: 60px;
 }
 .profile-page .profile-title {
   position: absolute;

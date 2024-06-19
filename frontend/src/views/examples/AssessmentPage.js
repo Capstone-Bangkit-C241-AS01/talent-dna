@@ -35,14 +35,16 @@ import {
 
 // core components
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useHistory } from "react-router-dom";
+import axios from 'axios';
 
 export default function AssessmentPage() {
   const [squares1to6, setSquares1to6] = React.useState("");
   const [squares7and8, setSquares7and8] = React.useState("");
   const [fullNameFocus, setFullNameFocus] = React.useState(false);
   const [miniModal, setMiniModal] = React.useState(false);
-  
+  const [assessmentAnswer, setAssessmentAnswer] = React.useState("");
+  const [errors, setErrors] = React.useState({});
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -72,6 +74,30 @@ export default function AssessmentPage() {
         "deg)"
     );
   };
+
+  // const validateForm = () => {
+  //   const newErrors = {};
+
+  //   if (!eventName.trim()) {
+  //     newErrors.event_name = "Event Name cannot be empty";
+  //   }
+
+  //   if (!description.trim()) {
+  //     newErrors.description = "Event Description cannot be empty";
+  //   }
+
+  //   if (!location.trim()) {
+  //     newErrors.event_location = "Event location cannot be empty";
+  //   }
+
+  //   if (endDate < startDate) {
+  //     newErrors.date = "End Date must be greater than Start Date";
+  // }
+
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
+
   const onSubmit = (e) => {
     e.preventDefault();
     setMiniModal(true);
@@ -81,32 +107,16 @@ export default function AssessmentPage() {
     setMiniModal(false);
 
     // TODO : PANGGIL API POST UNTUK SUBMIT ASSESSMENT
-    navigate("/result");
+    // navigate("/result");
 
-    // try {
+    try {
 
-        // const token = localStorage.getItem('token');
-        // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        const response = await axios.post('103.190.215.154/api', assessmentAnswer);
+        // history.push('/result', { response: response.data })
 
-        // const response = await axios.post(`${url}/api/reward/add/${idEvent}`, {
-        //     productName,
-        //     brandName,
-        //     category,
-        //     listDayReward
-        // });
-        // Untuk pre-filled dropdown event
-        // localStorage.setItem('idSelectedEvent', idEvent);
-
-        // console.log('Reward added successfully:', response.data);
-        // navigate('/reward-inventory');
-
-        // await new Promise((resolve) => setTimeout(resolve, 500))
-        // toast.success("Reward added successfully");
-
-    // } catch (error) {
-    //     console.error('Error:', error);
-    //     toast.error("Cannot add reward");
-    // }
+    } catch (error) {
+        console.error('Error:', error);
+    }
 };
 
   return (
@@ -118,9 +128,7 @@ export default function AssessmentPage() {
           <div className="content">
             <Container>
             <Card className="card-register">
-                    <CardHeader className="text-center mt-5">
-                      <h1>Fill the Assessment</h1>
-                    </CardHeader>
+                    <h1 className="text-center mt-5">Fill the Assessment</h1>
                     <Form className="form" onSubmit={(e) => onSubmit(e)}>
                     <CardBody>
                       
@@ -129,12 +137,16 @@ export default function AssessmentPage() {
                             "input-group-focus": fullNameFocus,
                           })}
                         >
+                          <Col>
+                          <p className="category">Name</p>
+                          <Input defaultValue="" placeholder="Insert your name" type="text" />
+                          <br></br>
+                          <p className="category">Answers</p>
                           <Input
                             placeholder="Insert the assessment answers"
                             type="textarea"
-                            onFocus={(e) => setFullNameFocus(true)}
-                            onBlur={(e) => setFullNameFocus(false)}
                           />
+                          </Col>
                         </InputGroup>
                         
 

@@ -28,6 +28,7 @@ import ResultPage from "views/examples/ResultPage.js";
 // import RegisterPage from "views/examples/RegisterPage.js";
 // import ProfilePage from "views/examples/ProfilePage.js";
 import AssessmentPage from "views/examples/AssessmentPage.js";
+import ListResultsPage from "views/examples/ListResultsPage.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -39,6 +40,7 @@ root.render(
       {/* <Route path="/register-page" element={<RegisterPage />} />
       <Route path="/profile-page" element={<ProfilePage />} /> */}
       <Route path="/fill-assessment" element={<AssessmentPage />} />
+      <Route path="/view-all-result" element={<ListResultsPage />} />
       <Route path="*" element={<Navigate to="/components" replace />} />
     </Routes>
   </BrowserRouter>
