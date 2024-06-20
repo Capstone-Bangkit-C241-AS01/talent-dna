@@ -29,6 +29,7 @@ import IndexNavbar from "components/Navbars/IndexNavbar.js";
 export default function ListResultsPage() {
     const [search, setSearch] = useState("");
     const [staffs, setStaffs] = useState([]);
+    const [role, setRole] = useState([]);
     const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -42,7 +43,7 @@ export default function ListResultsPage() {
     axios
       .get(`https://talentdna.cloud/api/data/`)
       .then((res) => {
-        setStaffs(res.data)
+        setStaffs(res.data);
         console.log(res.data);
       })
       .catch((err) => console.log(err));
@@ -56,13 +57,14 @@ export default function ListResultsPage() {
       return staffs;
     }
 
-    return staffs.filter((staff) =>
-      Object.values(staff).some(
-        (value) =>
-          typeof value === "string" &&
-          value.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+    return staffs.filter((staff) => {
+      const isNameMatch = staff.name.toLowerCase().includes(trimmedSearch);
+
+      const isJobMatch = staff.job_recommendations.length > 0 
+        && staff.job_recommendations[0].job.toLowerCase().includes(trimmedSearch);
+
+      return isNameMatch || isJobMatch;
+    });
   }
 
   const highlightSearchText = (text) => {
@@ -164,7 +166,7 @@ export default function ListResultsPage() {
                         <tr key={index}>
                         <th scope="row">{index+1}</th>
                         <td>{highlightSearchText(staff.name)}</td>
-                        <td>{highlightSearchText(staff.job_recommendations[0].job)}</td>
+                        <td>{highlightSearchText(staff.job_recommendations[0]?.job)}</td>
                         <td>
                             <Button
                                 className="btn-simple btn-round"
