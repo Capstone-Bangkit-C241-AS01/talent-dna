@@ -203,9 +203,9 @@ const ResultPageFromList = () => {
             </Col>
             <Col>
               <div className="typography-line">
-                <h2 className="mt-2 ml-4" style={{textTransform: "capitalize"}}>
+                <h3 className="mt-2 ml-5" style={{textTransform: "capitalize"}}>
                   {bottomTalent.name}
-                </h2>  
+                </h3>  
                 <Button
                 className="btn-simple btn-round ml-5 mt-2"
                 color="danger"
@@ -290,7 +290,7 @@ const ResultPageFromList = () => {
                     <Col md="12">
                       <div>
                         <Row>
-                          <h5 className="text-on-back ml-4">0{i+1}</h5>
+                          <h5 className="text-on-back ml-4 mt-2">0{i+1}</h5>
                           <h3 className="mt-4 ml-4">
                             {job.job}
                           </h3> 
