@@ -11,6 +11,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
+import {
+  Chart,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
 
 // reactstrap components
 import {
@@ -33,6 +44,7 @@ const ResultPageFromList = () => {
   const [jobs, setJobs] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
+  Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,);
 
   React.useEffect(() => {
     document.body.classList.toggle("landing-page");
@@ -83,38 +95,89 @@ const ResultPageFromList = () => {
         <br></br>
         <h1 className="h1-result text-center">Result</h1>
         <h2 className="mt-5">Name&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;&nbsp; {resultData.name}</h2>
+
+        {/* Top Talents */}
         <hr className="line-info" />
         <h1 className="title">
           Your{" "}
           <span className="text-info">Top 10 Talents</span>
         </h1>
-        <div id="typography">
-        {topTalents.map((topTalent, i) => ( 
-          <Row>
-            <Col md="3" className="text-center">
-              {i+1 < 10 ? (
-                <h5 className="text-on-back">0{i+1}</h5>
-              ):
-              <h5 className="text-on-back">{i+1}</h5>
-              }
-            </Col>
-            <Col md="9">
-              <div className="typography-line">
-                <h2 className="mt-4" style={{textTransform: "capitalize"}}>
-                  {topTalent.name}
-                </h2>  
-                <Button
-                className="btn-simple btn-round ml-5 mt-3"
-                color="success"
-                style={{ pointerEvents:"none", alignSelf: "flex-start" }}
-                >{`${(topTalent.strength * 100).toFixed(0)}%`}
-                </Button>
-              </div>
-            </Col>
-          </Row>
-        ))}
-        
-          <Card>
+        <div id="typography" style={{ display: 'flex', padding: '0px' }}>
+          <Col md="5" xs="12">
+          {topTalents.map((topTalent, i) => ( 
+              <Row>
+                <Col md="1" xs="12" className="text-center">
+                  {i+1 < 10 ? (
+                    <h5 className="text-on-back">0{i+1}</h5>
+                  ):
+                  <h5 className="text-on-back">{i+1}</h5>
+                  }
+                </Col>
+                <Col>
+                  <div className="typography-line">
+                    <h3 className="mt-2 ml-5" style={{textTransform: "capitalize"}}>
+                      {topTalent.name}
+                    </h3>  
+                    <Button
+                    className="btn-simple btn-round ml-5 mt-2"
+                    color="success"
+                    style={{ pointerEvents:"none", alignSelf: "flex-start" }}
+                    >{`${(topTalent.strength * 100).toFixed(0)}%`}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+          ))}
+          </Col>
+          <Col md="7" xs="12" >
+                {/* Top Talent Bar Chart */}
+                <div className="bar-charts-container" style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ width: '800px', height: '840px' }}>
+                  <Bar
+                    data={{
+                      labels: topTalents.map((data) => data.name),
+                      datasets: [
+                        {
+                          label: "",
+                          data: topTalents.map((data) => data.strength),
+                          backgroundColor: [
+                            '#6A1B9A', '#9C27B0', '#CE93D8', '#F3E5F5', '#F8BBD0', '#FF80AB','#FF4081', '#C51162', '#880E4F', '#910B2B'
+                          ],
+                          borderRadius: 0,
+                          barPercentage: 0.7
+                        },
+                      ],
+                    }}
+                    const options = {{
+                      indexAxis:'y',
+                      maintainAspectRatio: false, // Allows custom size
+                      scales: {
+                        x: {
+                          grid: {
+                            drawOnChartArea: false, // Disable grid lines on the x-axis
+                          },
+                          display: false
+                        },
+                        y: {
+                          grid: {
+                            drawOnChartArea: false, // Disable grid lines on the y-axis
+                          },
+                          display: false,
+                          
+                        },
+                      },
+                      plugins: {
+                        legend: {
+                          display: false
+                        }
+                      },
+                    }}
+                  />
+                  </div>
+                </div>
+              </Col>
+          </div>
+        <Card>
             <h2 className="title ml-5">Summary</h2>
               <CardBody>
               <p className="mx-4 mb-4" style={{fontSize:"20px"}}>
@@ -122,28 +185,29 @@ const ResultPageFromList = () => {
             </p>
               </CardBody>     
           </Card>
-        </div>
     
         <div className="space-50" />
         
+        {/* Bottom Talents */}
         <hr className="line-warning" />
         <h1 className="title">
           Your{" "}
           <span className="text-warning">Bottom 5 Talents</span>
         </h1>
-        <div id="typography">
+        <div id="typography" style={{ display: 'flex', padding: '0px' }}>
+        <Col md="5" xs="12">
         {bottomTalents.map((bottomTalent, i) => ( 
           <Row>
-            <Col md="3" className="text-center">
+            <Col md="1" xs="12" className="text-center">
                 <h5 className="text-on-back">0{i+1}</h5>
             </Col>
-            <Col md="9">
+            <Col>
               <div className="typography-line">
-                <h2 className="mt-4" style={{textTransform: "capitalize"}}>
+                <h2 className="mt-2 ml-4" style={{textTransform: "capitalize"}}>
                   {bottomTalent.name}
                 </h2>  
                 <Button
-                className="btn-simple btn-round ml-5 mt-3"
+                className="btn-simple btn-round ml-5 mt-2"
                 color="danger"
                 style={{ pointerEvents:"none", alignSelf: "flex-start" }}
                 >{`${(bottomTalent.strength * 100).toFixed(0)}%`}
@@ -152,7 +216,56 @@ const ResultPageFromList = () => {
             </Col>
           </Row>
         ))}
-          <Card>
+        </Col>
+        <Col md="7" xs="12" >
+                {/* Bottom Talent Bar Chart */}
+                <div className="bar-charts-container" style={{ display: 'flex', gap: '10px' }}>
+                  <div style={{ width: '800px', height: '410px' }}>
+                  <Bar
+                    data={{
+                      labels: bottomTalents.map((data) => data.name),
+                      datasets: [
+                        {
+                          label: "",
+                          data: bottomTalents.map((data) => data.strength),
+                          backgroundColor: [
+                            '#6A1B9A', '#9C27B0', '#CE93D8', '#F3E5F5', '#F8BBD0', '#FF80AB','#FF4081', '#C51162', '#880E4F', '#910B2B'
+                          ],
+                          borderRadius: 0,
+                          barPercentage: 0.7
+                        },
+                      ],
+                    }}
+                    const options = {{
+                      indexAxis:'y',
+                      maintainAspectRatio: false, // Allows custom size
+                      scales: {
+                        x: {
+                          grid: {
+                            drawOnChartArea: false, // Disable grid lines on the x-axis
+                          },
+                          display: false
+                        },
+                        y: {
+                          grid: {
+                            drawOnChartArea: false, // Disable grid lines on the y-axis
+                          },
+                          display: false,
+                          
+                        },
+                      },
+                      plugins: {
+                        legend: {
+                          display: false
+                        }
+                      },
+                    }}
+                  />
+                  </div>
+                </div>
+              </Col>
+        </div>
+        <Card>
             <h2 className="title ml-5">Summary</h2>
               <CardBody>
               <p className="mx-4 mb-4" style={{fontSize:"20px"}}>
@@ -160,7 +273,6 @@ const ResultPageFromList = () => {
             </p>
               </CardBody>     
           </Card>
-        </div>
 
         <div className="space-50" />
         
